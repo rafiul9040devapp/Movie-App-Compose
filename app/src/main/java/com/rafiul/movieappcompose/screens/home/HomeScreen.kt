@@ -16,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-import com.rafiul.movieappcompose.MovieRow
+import com.rafiul.movieappcompose.models.Movie
+import com.rafiul.movieappcompose.models.getMovies
 import com.rafiul.movieappcompose.navigation.MovieScreens
 import com.rafiul.movieappcompose.ui.theme.Purple80
+import com.rafiul.movieappcompose.widgets.MovieRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,26 +51,14 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MainContent(
     navController: NavController,
-    movieList: List<String> = listOf(
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar",
-        "Avatar"
-    )
+    movieList: List<Movie> = getMovies()
 ) {
     LazyColumn {
         items(items = movieList) { movieName ->
             MovieRow(movie = movieName) { movieDetails ->
                 Log.d("Movie Details", movieDetails)
 
-                navController.navigate(route = MovieScreens.DetailsScreen.name)
+                navController.navigate(route = MovieScreens.DetailsScreen.name + "/$movieDetails")
             }
         }
     }
