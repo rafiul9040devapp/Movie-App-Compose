@@ -46,6 +46,7 @@ import com.rafiul.movieappcompose.models.Movie
 import com.rafiul.movieappcompose.models.getMovies
 import com.rafiul.movieappcompose.ui.theme.Cream
 import com.rafiul.movieappcompose.ui.theme.Purple80
+import com.rafiul.movieappcompose.widgets.ImagePreviewer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +84,7 @@ fun DetailsScreen(navController: NavController, movieData: String?) {
                 movie = movie, modifier = Modifier
                     .padding(it)
                     .background(color = Cream)
-                    .verticalScroll(rememberScrollState(),true)
+                    .verticalScroll(rememberScrollState(), true)
             )
         } else {
             Text(
@@ -104,21 +105,7 @@ fun MovieDetailing(movie: Movie, modifier: Modifier) {
     ) {
 
         for (imageUrl in movie.images) {
-            Surface(
-                modifier = Modifier
-                    .padding(all = 8.dp)
-                    .shadow(elevation = 15.dp, shape = RectangleShape, spotColor = Color.Black)
-            ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(imageUrl)
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(R.drawable.placeholder),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds,
-                )
-            }
+           ImagePreviewer(imageUrl = imageUrl)
         }
 
         Spacer(modifier = Modifier.height(25.dp))
