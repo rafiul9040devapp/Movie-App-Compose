@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -23,10 +24,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -63,6 +66,9 @@ fun DetailsScreen(navController: NavController, movieData: String?) {
         movieFromList.id == movieData
     }
 
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -72,10 +78,13 @@ fun DetailsScreen(navController: NavController, movieData: String?) {
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Light,
                         modifier = Modifier.padding(all = 4.dp),
-                        textAlign = TextAlign.Justify
+                        textAlign = TextAlign.Justify,
+                        color = Color.Black
                     )
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Purple80),
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Cream,
+                ),
                 navigationIcon = {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -85,10 +94,13 @@ fun DetailsScreen(navController: NavController, movieData: String?) {
                             .clickable {
                                 navController.popBackStack()
                             },
+                        tint = Color.Black
                     )
                 },
+                scrollBehavior = scrollBehavior
             )
         },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
         if (movie != null) {
             MovieDetailing(
@@ -123,14 +135,7 @@ fun MovieDetailing(movie: Movie, modifier: Modifier) {
 
         ImagePreviewer(imageUrl = movie.images[0])
 
-        Spacer(modifier = Modifier.height(25.dp))
-
-        Text(
-            text = movie.title,
-            style = MaterialTheme.typography.headlineMedium,
-            color = Color.Black,
-            textAlign = TextAlign.Justify
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier.padding(all = 10.dp),
@@ -140,13 +145,13 @@ fun MovieDetailing(movie: Movie, modifier: Modifier) {
 
             Text(
                 text = "Director: ${movie.director} ",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = Color.Black,
                 textAlign = TextAlign.Justify
             )
             Text(
                 text = "Release: ${movie.year}",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = Color.Black,
                 textAlign = TextAlign.Justify
             )
@@ -154,21 +159,21 @@ fun MovieDetailing(movie: Movie, modifier: Modifier) {
 
             Text(
                 text = "Genre: ${movie.genre}",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = Color.Black,
                 textAlign = TextAlign.Justify
             )
 
             Text(
                 text = "Casting: ${movie.actors}",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = Color.Black,
                 textAlign = TextAlign.Justify
             )
 
             Text(
                 text = "Rating: ${movie.rating}",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = Color.Black,
                 textAlign = TextAlign.Justify
             )
@@ -178,7 +183,7 @@ fun MovieDetailing(movie: Movie, modifier: Modifier) {
                     withStyle(
                         style = SpanStyle(
                             color = Color.Black,
-                            fontSize = 13.sp,
+                            fontSize = 16.sp,
                         )
                     ) {
                         append("Plot: ")
@@ -187,7 +192,7 @@ fun MovieDetailing(movie: Movie, modifier: Modifier) {
                     withStyle(
                         style = SpanStyle(
                             color = Color.Black,
-                            fontSize = 13.sp,
+                            fontSize = 16.sp,
                         )
                     ) {
                         append(movie.plot)
@@ -200,10 +205,11 @@ fun MovieDetailing(movie: Movie, modifier: Modifier) {
         Spacer(modifier = Modifier.height(25.dp))
 
         Text(
-            text = "Movie Images",
-            style = MaterialTheme.typography.headlineMedium,
+            text = "${movie.title}'s Images",
+            style = MaterialTheme.typography.headlineSmall,
             color = Color.Black,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.padding(all = 4.dp)
         )
 
 
@@ -220,7 +226,7 @@ private fun HorizontalImagePreviewer(movie: Movie) {
             Card(
                 modifier = Modifier
                     .padding(all = 12.dp)
-                    .size(size = 240.dp),
+                    .wrapContentSize(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
 
                 ) {
