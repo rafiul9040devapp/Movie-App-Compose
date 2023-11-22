@@ -63,7 +63,6 @@ fun MovieRow(movie: Movie = getMovies()[0], onItemClick: (String) -> Unit = {}) 
         mutableStateOf(false)
     }
 
-
     Card(
         modifier = Modifier
             .padding(all = 8.dp)
@@ -153,7 +152,9 @@ fun MovieRow(movie: Movie = getMovies()[0], onItemClick: (String) -> Unit = {}) 
                             modifier = Modifier.padding(all = 6.dp)
                         )
 
-                        Divider(modifier = Modifier.padding(all = 3.dp).height(2.dp))
+                        Divider(modifier = Modifier
+                            .padding(all = 3.dp)
+                            .height(2.dp))
 
 
                         Text(
